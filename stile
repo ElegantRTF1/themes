@@ -5,21 +5,14 @@ local ThemeManager = {} do
 
 	ThemeManager.Library = nil
 	ThemeManager.BuiltInThemes = {
-		['Default'] 		= { 1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"00ecf0","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
-		['BBot'] 			= { 2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e1e","AccentColor":"7e48a3","BackgroundColor":"232323","OutlineColor":"141414"}') },
-		['Fatality']		= { 3, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1842","AccentColor":"c50754","BackgroundColor":"191335","OutlineColor":"3c355d"}') },
-		['Jester'] 			= { 4, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"db4467","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
-		['Mint'] 			= { 5, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
-		['Tokyo Night'] 	= { 6, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"191925","AccentColor":"6759b3","BackgroundColor":"16161f","OutlineColor":"323232"}') },
-		['Ubuntu'] 			= { 7, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3e3e3e","AccentColor":"e2581e","BackgroundColor":"323232","OutlineColor":"191919"}') },
-		['Quartz'] 			= { 8, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"232330","AccentColor":"426e87","BackgroundColor":"1d1b26","OutlineColor":"27232f"}') },
-                ['Spotify'] 			= { 9, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"181818","AccentColor":"1ed760","BackgroundColor":"121212","OutlineColor":"373737"}') },
-                ['Entropy'] 		= { 10, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3d3a43","AccentColor":"81bbe9","BackgroundColor":"302f37","OutlineColor":"5a5a5a"}') },
-                ['Interwebz'] 		= { 11, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"291f38","AccentColor":"c9654b","BackgroundColor":"1f162b","OutlineColor":"373737"}') },
-                ['Dracula'] 		= { 12, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"2a2c38","AccentColor":"9a81b3","BackgroundColor":"2a2c38","OutlineColor":"373737"}') },
-                ['Youtube'] 		= {13, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"0d0c0c","AccentColor":"ff0000","BackgroundColor":"0c0b0b","OutlineColor":"211e1e"}') },
-                ['Abyss'] 		= {14, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e1e","AccentColor":"8c87b4","BackgroundColor":"141414","OutlineColor":"373737"}') },
-                ['Fatality'] 		= {15, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"231946","AccentColor":"f00f50","BackgroundColor":"191432","OutlineColor":"373737"}') },
+		['Default'] 		= { 1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e1e","AccentColor":"8c87b4","BackgroundColor":"141414","OutlineColor":"373737"}') },
+		['Fatality']		= { 2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1842","AccentColor":"c50754","BackgroundColor":"191335","OutlineColor":"3c355d"}') },
+		['Jester'] 			= { 3, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"db4467","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+		['Mint'] 			= { 4, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+                ['gamesense']                = { 5, httpService:JSONDecode('{"FontColor":"e0e0e0","MainColor":"1a1a1a","AccentColor":"00ff00","BackgroundColor":"101010","OutlineColor":"2a2a2a"}') },
+                ['interwebz'] 		= { 6, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"291f38","AccentColor":"c9654b","BackgroundColor":"1f162b","OutlineColor":"373737"}') },
+                ['stile'] 		= { 7, httpService:JSONDecode('{"FontColor":"e0e0e0","MainColor":"1e1e2e","AccentColor":"8bcdcd","BackgroundColor":"1a1b26","OutlineColor":"292b3b"}') },
+                ['fatality'] 		= {8, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"231946","AccentColor":"f00f50","BackgroundColor":"191432","OutlineColor":"373737"}') },
 	}
 
 	function ThemeManager:ApplyTheme(theme)
@@ -28,7 +21,7 @@ local ThemeManager = {} do
 
 		if not data then return end
 
-
+		-- custom themes are just regular dictionaries instead of an array with { index, dictionary }
 
 		local scheme = data[2]
 		for idx, col in next, customThemeData or scheme do
@@ -82,12 +75,11 @@ local ThemeManager = {} do
 	end
 
 	function ThemeManager:CreateThemeManager(groupbox)
-		local TabBox = Tabs.Main:AddLeftTabbox() -- Add Tabbox on left side
-		TabBox:AddLabel('Background color'):AddColorPicker('BackgroundColor', { Default = self.Library.BackgroundColor });
-		TabBox:AddLabel('Main color')	:AddColorPicker('MainColor', { Default = self.Library.MainColor });
-		TabBox:AddLabel('Accent color'):AddColorPicker('AccentColor', { Default = self.Library.AccentColor });
-		TabBox:AddLabel('Outline color'):AddColorPicker('OutlineColor', { Default = self.Library.OutlineColor });
-		TabBox:AddLabel('Font color')	:AddColorPicker('FontColor', { Default = self.Library.FontColor });
+		groupbox:AddLabel('Background color'):AddColorPicker('BackgroundColor', { Default = self.Library.BackgroundColor });
+		groupbox:AddLabel('Main color')	:AddColorPicker('MainColor', { Default = self.Library.MainColor });
+		groupbox:AddLabel('Accent color'):AddColorPicker('AccentColor', { Default = self.Library.AccentColor });
+		groupbox:AddLabel('Outline color'):AddColorPicker('OutlineColor', { Default = self.Library.OutlineColor });
+		groupbox:AddLabel('Font color')	:AddColorPicker('FontColor', { Default = self.Library.FontColor });
 
 		local ThemesArray = {}
 		for Name, Theme in next, self.BuiltInThemes do
@@ -96,7 +88,7 @@ local ThemeManager = {} do
 
 		table.sort(ThemesArray, function(a, b) return self.BuiltInThemes[a][1] < self.BuiltInThemes[b][1] end)
 
-
+		groupbox:AddDivider()
 		groupbox:AddDropdown('ThemeManager_ThemeList', { Text = 'Theme list', Values = ThemesArray, Default = 1 })
 
 		groupbox:AddButton('Set as default', function()
@@ -108,10 +100,10 @@ local ThemeManager = {} do
 			self:ApplyTheme(Options.ThemeManager_ThemeList.Value)
 		end)
 
-
+		groupbox:AddDivider()
 		groupbox:AddInput('ThemeManager_CustomThemeName', { Text = 'Custom theme name' })
 		groupbox:AddDropdown('ThemeManager_CustomThemeList', { Text = 'Custom themes', Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 })
-
+		groupbox:AddDivider()
 		
 		groupbox:AddButton('Save theme', function() 
 			self:SaveCustomTheme(Options.ThemeManager_CustomThemeName.Value)
